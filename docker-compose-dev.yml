@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: PastelariaContainer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'php artisan serve --host=0.0.0.0'
+    volumes:
+      - ./service:/var/www/html
+    ports:
+      - "8080:8000"
+    networks:
+      - pasteleria_network
+
+  # Database Service
+  db:
+    image: mysql
+    container_name: pasteleria_mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: pasteleria
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - pasteleria_network
+
+networks:
+  pasteleria_network:
+    driver: bridge
