@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits;
 
+use App\Exceptions\ErrorCredentials;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -25,7 +26,10 @@ class ErrorHandler
             $response['code'] = Response::HTTP_FORBIDDEN;
             $response['message'] = $e->getMessage();
         }
-
+        if ($e instanceof ErrorCredentials) {
+            $response['code'] = Response::HTTP_UNAUTHORIZED;
+            $response['message'] = $e->getMessage();
+        }
         if ($e instanceof NotFoundHttpException) {
             $response['code'] = Response::HTTP_NOT_FOUND;
             $response['message'] = 'Elemento no encontrado';
