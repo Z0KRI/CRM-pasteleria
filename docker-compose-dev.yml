@@ -1,20 +1,6 @@
 version: '3.8'
 
 services:
-  app:
-    container_name: PastelariaContainer
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: 'php artisan serve --host=0.0.0.0'
-    volumes:
-      - ./service:/var/www/html
-    ports:
-      - "8080:8000"
-    networks:
-      - pasteleria_network
-
-  # Database Service
   db:
     image: 'postgres:16.2-alpine'
     volumes:
@@ -24,10 +10,4 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     ports:
-    - "${DB_PORT}:5432"
-    networks:
-      - pasteleria_network
-
-networks:
-  pasteleria_network:
-    driver: bridge
+      - "${DB_PORT}:5432"
