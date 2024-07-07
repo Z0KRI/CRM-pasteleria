@@ -16,15 +16,15 @@ services:
 
   # Database Service
   db:
-    image: mysql
-    container_name: pasteleria_mysql
+    image: 'postgres:16.2-alpine'
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - ./data:/var/lib/postgresql/data
     environment:
-      MYSQL_DATABASE: pasteleria
-      MYSQL_ROOT_PASSWORD: password
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     ports:
-      - "3306:3306"
+    - "${DB_PORT}:5432"
     networks:
       - pasteleria_network
 
