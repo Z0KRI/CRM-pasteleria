@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmploymentController;
 
 @include('auth.routes.php');
+@include('common.routes.php');
 
 Route::apiResource('employees', EmployeeController::class);
 
