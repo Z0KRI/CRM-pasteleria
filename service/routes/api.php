@@ -8,6 +8,7 @@ use App\Http\Controllers\StoreController;
 
 @include('auth.routes.php');
 @include('common.routes.php');
+@include('warehouse.routes.php');
 
 Route::apiResource('employees', EmployeeController::class);
 Route::apiResource('employments', EmploymentController::class);

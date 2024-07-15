@@ -3,9 +3,14 @@
 namespace App\Http\Traits;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 trait ResponseIndex
 {
+	/**
+	 * @param class-string<Model> $object  The fully qualified class name of the Eloquent model.
+	 */
 	public function getIndex(
 		Request $request,
 		$object,
@@ -13,11 +18,47 @@ trait ResponseIndex
 		string  $orderBy = 'id',
 		string  $order = "desc",
 		$resource = '',
-	): \Illuminate\Http\JsonResponse {
+	) {
 		$orderQuery = $this->getOrderByQuery($request, $orderBy, $order);
-		$query = $object::orderBy($orderQuery['orderBy'], $orderQuery['order']);
+		if ($object instanceof Builder) {
+			$query = $object->orderBy($orderQuery['orderBy'], $orderQuery['order']);
+		} else {
+			$query = $object::orderBy($orderQuery['orderBy'], $orderQuery['order']);
+		}
 		$query = $this->getFilterQueryLike($request, $filters, $query);
 		$query = $this->getFilterQuery($request, $filters, $query);
+		if ($request->query('paginated')) {
+			return $this->paginated($request, $query, $resource);
+		}
+		return $this->response(
+			$resource
+				? $resource::Collection($query->get())
+				: $query->get()
+		);
+	}
+
+	/**
+	 * @param class-string<Model> $object  The fully qualified class name of the Eloquent model.
+	 */
+	public function getIndexPolymorph(
+		Request $request,
+		$object,
+		string  $field,
+		string  $model,
+		string  $modelId,
+		array   $filters = [],
+		string  $orderBy = 'id',
+		string  $order = "desc",
+		$resource = '',
+	) {
+		$orderQuery = $this->getOrderByQuery($request, $orderBy, $order);
+		$query = $object::orderBy($orderQuery['orderBy'], $orderQuery['order'])
+			->where("{$field}_type", getClassName($model))
+			->where("{$field}_id", $modelId);
+
+		$query = $this->getFilterQueryLike($request, $filters, $query);
+		$query = $this->getFilterQuery($request, $filters, $query);
+
 		if ($request->query('paginated')) {
 			return $this->paginated($request, $query, $resource);
 		}

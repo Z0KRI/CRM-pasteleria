@@ -15,5 +15,7 @@ class State extends Model
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
+    protected $primaryKey = 'id';
+
     protected $fillable = ['name'];
 }

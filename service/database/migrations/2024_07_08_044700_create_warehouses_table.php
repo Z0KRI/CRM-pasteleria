@@ -11,19 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('warehouses', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('paternal_surname');
-            $table->string('maternal_surname')->nullable();
-            $table->float('salary');
-
-            // Foreign keys
-            $table->uuid('store_id');
-            $table->uuid('user_id');
-            $table->uuid('job_id');
+            $table->string('slug');
+            $table->string('warehouseable_type');
+            $table->uuid('warehouseable_id');
             $table->softDeletes();
-
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('warehouses');
     }
 };
