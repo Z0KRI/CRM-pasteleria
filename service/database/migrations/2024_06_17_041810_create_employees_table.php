@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('paternal_surname');
             $table->string('maternal_surname')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->uuid('user_id');
             $table->uuid('job_id');
             $table->softDeletes();
-            
+
             $table->timestamps();
         });
     }

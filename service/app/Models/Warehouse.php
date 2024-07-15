@@ -13,7 +13,9 @@ class Warehouse extends Model
 {
     use HasFactory, FilterByQuery, HasUuids, SoftDeletes;
 
-    protected $hidden = ['deleted_at'];
+    protected $hidden = ['deleted_at', 'updated_at'];
+
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',

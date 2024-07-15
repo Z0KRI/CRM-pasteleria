@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employment extends Model
 {
-    use HasFactory, FilterByQuery ,HasUuids, SoftDeletes;
+    use HasFactory, FilterByQuery, HasUuids, SoftDeletes;
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
-    
+
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'name',
     ];
