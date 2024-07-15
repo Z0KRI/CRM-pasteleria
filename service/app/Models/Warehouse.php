@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Formatters;
 use App\Models\Traits\FilterByQuery;
 
 use Illuminate\Database\Eloquent\Model;
@@ -22,4 +23,15 @@ class Warehouse extends Model
         'warehouseable_type',
         'warehouseable_id',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->slug = Formatters::slug($model->name);
+        });
+        self::updating(function ($model) {
+            $model->slug = Formatters::slug($model->name);
+        });
+    }
 }
