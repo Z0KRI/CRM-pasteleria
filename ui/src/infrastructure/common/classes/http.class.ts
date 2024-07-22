@@ -2,7 +2,7 @@ import type { IHeaders } from '@/common/interfaces';
 import { injectable } from 'inversify';
 
 @injectable()
-export class HTTPClasses {
+export class HTTPClass {
     constructor() { }
 
     public get(url: string, params: string, headers: IHeaders = {

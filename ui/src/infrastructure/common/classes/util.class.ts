@@ -3,9 +3,9 @@ import type { Router } from "vue-router";
 import Cookies from "js-cookie";
 
 export class UtilClass {
-    private router: Router;
-
-    constructor(router: Router) {
+    constructor(
+        private router: Router,
+    ) {
         this.router = router;
     }
 
