@@ -26,13 +26,16 @@ trait SuccessResponse
     return response()->json($response, $code);
   }
 
-  public function responseWithPagination($paginator, mixed $resource = null): JsonResponse
+  public function responseWithPagination($paginator, $resource = null): JsonResponse
   {
     $totalRows = $paginator->total();
     $currentPage = $paginator->currentPage();
     $totalPages = $paginator->lastPage();
     $nextPage = ($totalPages > $currentPage) ? ($currentPage + 1) : $currentPage;
     $prevPage = ($currentPage === 1) ? null : ($currentPage - 1);
+
+    $data = $resource && class_exists($resource) ? $resource::collection($paginator->items()) : $paginator->items();
+
     $response = [
       "http" => [
         "status" => Response::HTTP_OK,
@@ -40,11 +43,11 @@ trait SuccessResponse
         "method" => "GET",
         "success" => true
       ],
-      "data" => (is_null($resource)) ? $paginator->items() : $resource::collection($paginator->items()),
+      "data" => $data,
       "pages" => [
         "currentPage" => $currentPage,
         "nextPage" => $nextPage,
-        "totalPages" => $paginator->lastPage(),
+        "totalPages" => $totalPages,
         "perPage" => $paginator->perPage(),
         "totalRecords" => $totalRows,
         "prevPage" => $prevPage
