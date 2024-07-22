@@ -22,7 +22,7 @@ class CategoryController extends Controller
             'like' => ['name']
         ];
 
-        return $this->getIndex($request, Category::class, $filters, "id", "desc", CategoryResource::class);
+        return $this->getIndex($request, Category::class, $filters);
     }
 
     public function store(StoreCategoryRequest $request)
