@@ -1,6 +1,6 @@
 export interface IResponseAPI {
     http: HTTP;
-    meta: Pages;
+    meta?: Pages;
 }
 
 interface HTTP {
