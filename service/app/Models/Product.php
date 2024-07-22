@@ -25,4 +25,10 @@ class Product extends Model
         'size_id',
         'measure_unit_id',
     ];
+
+    public function Categories()
+    {
+        return $this->belongsToMany(Category::class, 'categories_products',
+            'product_id','category_id');
+    }
 }
