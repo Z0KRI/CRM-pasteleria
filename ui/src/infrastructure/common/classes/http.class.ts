@@ -22,7 +22,7 @@ export class HTTPClass {
     public async patch<T>(url: string, payload: any = {}, headers: IHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-    }) {
+    }): Promise<T> {
         return await fetch(url, {
             method: 'PATCH',
             headers: this.getHeaderInit(headers),
