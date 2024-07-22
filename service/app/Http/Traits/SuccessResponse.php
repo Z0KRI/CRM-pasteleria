@@ -7,6 +7,16 @@ use Illuminate\Http\Response;
 
 trait SuccessResponse
 {
+  /**
+   * Generates a standardized JSON response.
+   *
+   * @param mixed $data
+   * @param string $method
+   * @param string $message
+   * @param int $code
+   * @param bool $success
+   * @return JsonResponse
+   */
   public function response(
     $data,
     string $method = 'GET',
@@ -14,45 +24,50 @@ trait SuccessResponse
     int $code = Response::HTTP_OK,
     bool $success = true
   ): JsonResponse {
-    $response = [
-      "http" => [
-        "status" => $code,
-        "message" => $message,
-        "method" => $method,
-        "success" => $success
+    return response()->json([
+      'http' => [
+        'status' => $code,
+        'message' => $message,
+        'method' => $method,
+        'success' => $success,
       ],
-      "data" => $data,
-    ];
-    return response()->json($response, $code);
+      'data' => $data,
+    ], $code);
   }
 
-  public function responseWithPagination($paginator, $resource = null): JsonResponse
+  /**
+   * Generates a paginated JSON response.
+   *
+   * @param mixed $paginator
+   * @param string|null $resource
+   * @return JsonResponse
+   */
+  public function responseWithPagination($paginator, ?string $resource = null): JsonResponse
   {
-    $totalRows = $paginator->total();
-    $currentPage = $paginator->currentPage();
-    $totalPages = $paginator->lastPage();
-    $nextPage = ($totalPages > $currentPage) ? ($currentPage + 1) : $currentPage;
-    $prevPage = ($currentPage === 1) ? null : ($currentPage - 1);
+    $data = $resource && class_exists($resource)
+      ? $resource::collection($paginator->items())
+      : $paginator->items();
 
-    $data = $resource && class_exists($resource) ? $resource::collection($paginator->items()) : $paginator->items();
-
-    $response = [
-      "http" => [
-        "status" => Response::HTTP_OK,
-        "message" => null,
-        "method" => "GET",
-        "success" => true
+    return response()->json([
+      'http' => [
+        'status' => Response::HTTP_OK,
+        'message' => null,
+        'method' => 'GET',
+        'success' => true,
       ],
-      "data" => $data,
-      "pages" => [
-        "currentPage" => $currentPage,
-        "nextPage" => $nextPage,
-        "totalPages" => $totalPages,
-        "perPage" => $paginator->perPage(),
-        "totalRecords" => $totalRows,
-        "prevPage" => $prevPage
-      ]
-    ];
-    return response()->json($response, Response::HTTP_OK);
+      'data' => $data,
+      'meta' => [
+        'currentPage' => $paginator->currentPage(),
+        'nextPage' => $paginator->currentPage() < $paginator->lastPage()
+          ? $paginator->currentPage() + 1
+          : null,
+        'totalPages' => $paginator->lastPage(),
+        'perPage' => $paginator->perPage(),
+        'totalRecords' => $paginator->total(),
+        'prevPage' => $paginator->currentPage() > 1
+          ? $paginator->currentPage() - 1
+          : null,
+      ],
+    ], Response::HTTP_OK);
   }
 }
