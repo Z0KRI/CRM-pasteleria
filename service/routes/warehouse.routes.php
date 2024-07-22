@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\PolymorphRouteValidator;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,3 +12,5 @@ Route::get('warehouses/{model}/{modelId}', [WarehouseController::class, 'index']
 
 Route::post('warehouses/{model}/{modelId}', [WarehouseController::class, 'store'])
     ->where(PolymorphRouteValidator::UUID());
+
+Route::apiResource('categories', CategoryController::class);
