@@ -1,5 +1,5 @@
-import type { IHeaders } from "@/common/interfaces";
-import type { Router } from "vue-router";
+import { IHeaders } from "@/common/interfaces";
+import { Router } from "vue-router";
 import Cookies from "js-cookie";
 
 export class UtilClass {

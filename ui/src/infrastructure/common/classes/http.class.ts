@@ -5,47 +5,59 @@ import { injectable } from 'inversify';
 export class HTTPClass {
     constructor() { }
 
-    public get(url: string, params: string, headers: IHeaders = {
+    public async get<T>(url: string, params?: string, headers: IHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-    }) {
+    }): Promise<T> {
         const urlWithParams = params ? `${url}?${params}` : url;
-        return fetch(urlWithParams, {
+        return await fetch(urlWithParams, {
             method: 'GET',
             headers: this.getHeaderInit(headers)
+        }).then(async (res) => {
+            const resp = await res.json()
+            return resp
         })
     }
 
-    public patch(url: string, payload: any, headers: IHeaders = {
+    public async patch<T>(url: string, payload: any = {}, headers: IHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
     }) {
-        return fetch(url, {
+        return await fetch(url, {
             method: 'PATCH',
             headers: this.getHeaderInit(headers),
             body: JSON.stringify(payload),
+        }).then(async (res) => {
+            const resp = await res.json()
+            return resp
         })
     }
 
-    public post(url: string, payload: any, headers: IHeaders = {
+    public async post<T>(url: string, payload: any = {}, headers: IHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-    }) {
+    }): Promise<T> {
         return fetch(url, {
             method: 'POST',
             headers: this.getHeaderInit(headers),
             body: JSON.stringify(payload),
+        }).then(async (res) => {
+            const resp = await res.json();
+            return resp
         })
     }
 
-    public delete(url: string, params: string, headers: IHeaders = {
+    public async delete<T>(url: string, params: string, headers: IHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-    }) {
+    }): Promise<T> {
         const urlWithParams = params ? `${url}?${params}` : url;
-        return fetch(urlWithParams, {
+        return await fetch(urlWithParams, {
             method: 'DELETE',
             headers: this.getHeaderInit(headers)
+        }).then(async (res) => {
+            const resp = await res.json()
+            return resp
         })
     }
 
