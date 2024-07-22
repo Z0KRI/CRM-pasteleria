@@ -4,13 +4,14 @@ use App\Models\Store;
 use App\Models\Company;
 
 use App\Exceptions\ModelNotAceptable;
+use Illuminate\Http\Response;
 
 function getClassName($name): string
 {
     $classMap = [
-        'stores' => Store::class,
-        'companies' => Company::class
+        'store' => Store::class,
+        'company' => Company::class
     ];
 
-    return $classMap[$name] ?? throw new ModelNotAceptable('El modelo no es aceptado');
+    return $classMap[$name] ?? throw new ModelNotAceptable('El modelo no es aceptado', Response::HTTP_BAD_REQUEST);
 }

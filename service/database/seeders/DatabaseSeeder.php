@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StateSeeder::class,
             CitySeeder::class,
-            ZipCodeSeeder::class
+            ZipCodeSeeder::class,
+            CompanySeeder::class
         ]);
 
         User::create(['name' => 'Super Admin', 'email' => 'admin@example.com', 'password' => Hash::make('password')]);
