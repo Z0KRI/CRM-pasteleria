@@ -47,12 +47,11 @@ export class HTTPClass {
         })
     }
 
-    public async delete<T>(url: string, params: string, headers: IHeaders = {
+    public async delete<T>(url: string, headers: IHeaders = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
     }): Promise<T> {
-        const urlWithParams = params ? `${url}?${params}` : url;
-        return await fetch(urlWithParams, {
+        return await fetch(url, {
             method: 'DELETE',
             headers: this.getHeaderInit(headers)
         }).then(async (res) => {
