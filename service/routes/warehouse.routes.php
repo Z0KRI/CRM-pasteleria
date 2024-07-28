@@ -2,6 +2,8 @@
 
 use App\Helpers\PolymorphRouteValidator;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CostController;
+use App\Http\Controllers\MeasurementUnitController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,3 +16,4 @@ Route::post('warehouses/{model}/{modelId}', [WarehouseController::class, 'store'
     ->where(PolymorphRouteValidator::UUID());
 
 Route::apiResource('categories', CategoryController::class);
+Route::apiResource('measurement_units', MeasurementUnitController::class);
